@@ -3,6 +3,7 @@
 Introspects the URL structure of a Django application and produces a JSON-encoded description.
 
 Installation: `pip install django-topography` then add `topography` to `INSTALLED_APPS`.
+
 Usage: `manage.py topography`
 
 Example output:
