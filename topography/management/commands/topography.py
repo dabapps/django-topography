@@ -35,17 +35,17 @@ def trim(docstring):
     return '\n'.join(trimmed)
 
 
-def inspect_method(name, method):
+def inspect_function(name, function):
     return {
         'name': name,
-        'docs': trim(method.__doc__),
-        'lines': len(inspect.getsourcelines(method)[0])
+        'docs': trim(function.__doc__),
+        'lines': len(inspect.getsourcelines(function)[0])
     }
 
 
 def inspect_methods(view_class):
     view = view_class()
-    return [inspect_method(method_name, getattr(view, method_name.lower())) for method_name in view.allowed_methods if method_name != 'OPTIONS']
+    return [inspect_function(method_name, getattr(view, method_name.lower())) for method_name in view.allowed_methods if method_name != 'OPTIONS']
 
 
 def extract_view_info_from_class(view_class):
@@ -61,10 +61,7 @@ def extract_view_info(view):
     if hasattr(view, 'cls'):
         return extract_view_info_from_class(view.cls)
 
-    return {
-        'name': view.__name__,
-        'docs': trim(view.__doc__),
-    }
+    return inspect_function(view.__name__, view)
 
 
 def extract_url_data(urls, prefix=''):
