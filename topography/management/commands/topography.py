@@ -5,7 +5,18 @@ from django.contrib.admindocs.views import simplify_regex
 from django.core.urlresolvers import RegexURLPattern, RegexURLResolver
 import inspect
 import json
+import os
+import re
 import sys
+
+
+def get_version():
+    """
+    Return package version as listed in `__version__` in `init.py`.
+    """
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    init_py = open(os.path.join(current_dir, '..', '..', '__init__.py')).read()
+    return re.search("^__version__ = ['\"]([^'\"]+)['\"]", init_py, re.MULTILINE).group(1)
 
 
 def trim(docstring):
@@ -83,6 +94,6 @@ class Command(BaseCommand):
         urls = __import__(settings.ROOT_URLCONF, {}, {}, ['']).urlpatterns
         self.stdout.write(json.dumps({
             "urls": extract_url_data(urls),
-            "version": 0,
+            "version": get_version(),
             "timestamp": datetime.utcnow().isoformat(),
         }))
