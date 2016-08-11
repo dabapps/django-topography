@@ -6,8 +6,6 @@ from django.contrib.admindocs.views import simplify_regex
 from django.core.urlresolvers import RegexURLPattern, RegexURLResolver
 import inspect
 import json
-import os
-import re
 import sys
 import topography
 
