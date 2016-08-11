@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from datetime import datetime
 from django.core.management.base import BaseCommand
 from django.conf import settings
@@ -8,15 +9,7 @@ import json
 import os
 import re
 import sys
-
-
-def get_version():
-    """
-    Return package version as listed in `__version__` in `init.py`.
-    """
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    init_py = open(os.path.join(current_dir, '..', '..', '__init__.py')).read()
-    return re.search("^__version__ = ['\"]([^'\"]+)['\"]", init_py, re.MULTILINE).group(1)
+import topography
 
 
 def trim(docstring):
@@ -94,6 +87,6 @@ class Command(BaseCommand):
         urls = __import__(settings.ROOT_URLCONF, {}, {}, ['']).urlpatterns
         self.stdout.write(json.dumps({
             "urls": extract_url_data(urls),
-            "version": get_version(),
+            "version": topography.__version__,
             "timestamp": datetime.utcnow().isoformat(),
         }))
