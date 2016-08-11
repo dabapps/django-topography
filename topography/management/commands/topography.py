@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from datetime import datetime
 from django.core.management.base import BaseCommand
 from django.conf import settings
@@ -6,6 +7,7 @@ from django.core.urlresolvers import RegexURLPattern, RegexURLResolver
 import inspect
 import json
 import sys
+import topography
 
 
 def trim(docstring):
@@ -83,6 +85,6 @@ class Command(BaseCommand):
         urls = __import__(settings.ROOT_URLCONF, {}, {}, ['']).urlpatterns
         self.stdout.write(json.dumps({
             "urls": extract_url_data(urls),
-            "version": 0,
+            "version": topography.__version__,
             "timestamp": datetime.utcnow().isoformat(),
         }))
